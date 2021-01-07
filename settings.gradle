@@ -1,0 +1,3 @@
+rootProject.name='Kuro-library'
+include ':app'
+include ':kurolibrary'
