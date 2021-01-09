@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.trs88.kurolibrary.log.KuroConsolePrinter
 import com.trs88.kurolibrary.log.KuroLogConfig
 import com.trs88.kurolibrary.log.KuroLogManager
+import com.trs88.kurolibrary.log.KuroLogType
 
 class App:Application() {
     override fun onCreate() {
@@ -22,6 +23,14 @@ class App:Application() {
 
             override fun enable(): Boolean {
                 return true
+            }
+
+            override fun stackTraceDepth(): Int {
+                return 1
+            }
+
+            override fun printLogLevel(): Int {
+                return KuroLogType.V
             }
         },KuroConsolePrinter())
     }

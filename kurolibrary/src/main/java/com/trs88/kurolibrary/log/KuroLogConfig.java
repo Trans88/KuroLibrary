@@ -9,6 +9,14 @@ public abstract class KuroLogConfig {
     static KuroStackTraceFormatter KURO_STACKTRACE_FORMATTER =new KuroStackTraceFormatter();
     static KuroThreadFormatter KURO_THREAD_FORMATTER =new KuroThreadFormatter();
 
+    /**
+     * 设置输出日志的等级
+     * @return level
+     */
+    public int printLogLevel(){
+        return KuroLogType.V;
+    }
+
     public JsonParser injectJsonParser(){
         return null;
     }

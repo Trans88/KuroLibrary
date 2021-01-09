@@ -1,5 +1,8 @@
 package com.trs88.kurolibrary.log;
 
+/**
+ * 堆栈打印格式化
+ */
 public class KuroStackTraceFormatter implements KuroLogFormatter<StackTraceElement[]> {
     @Override
     public String format(StackTraceElement[] data) {

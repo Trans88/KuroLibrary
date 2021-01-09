@@ -22,7 +22,7 @@ public class KuroLogModel {
     }
 
     public String getFlattened() {
-        return format(timeMillis) + '|' + level + '|' + tag + '|';
+        return format(timeMillis) + " | " + level + " | " + tag + " | ";
     }
 
     private String format(long timeMillis) {

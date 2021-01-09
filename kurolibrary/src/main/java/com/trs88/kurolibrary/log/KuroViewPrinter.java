@@ -16,6 +16,9 @@ import com.trs88.kurolibrary.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 可视化log打印器
+ */
 public class KuroViewPrinter implements KuroLogPrinter {
     private RecyclerView recyclerView;
     private LogAdapter adapter;
@@ -28,6 +31,7 @@ public class KuroViewPrinter implements KuroLogPrinter {
         LinearLayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
         viewProvider =new KuroViewPrinterProvider(rootView,recyclerView);
     }
 

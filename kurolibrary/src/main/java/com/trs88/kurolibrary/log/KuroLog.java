@@ -82,6 +82,11 @@ public class KuroLog {
             return;
         }
 
+        //如果配置输出的log等级大于当前的log等级 就不打印
+        if (config.printLogLevel()>type){
+            return;
+        }
+
         StringBuilder sb =new StringBuilder();
         if (config.includeTread()){
             String threadInfo = KuroLogConfig.KURO_THREAD_FORMATTER.format(Thread.currentThread()) ;

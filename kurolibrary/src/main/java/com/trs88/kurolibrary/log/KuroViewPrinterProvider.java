@@ -103,7 +103,24 @@ public class KuroViewPrinterProvider {
         });
         logView.addView(closeView,params);
 
+        FrameLayout.LayoutParams clearParams =new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        clearParams.gravity=Gravity.START;
+        TextView clearView =new TextView(rootView.getContext());
+        clearView.setText("clear");
+        clearView.setTextColor(Color.WHITE);
+        clearView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearLog();
+            }
+        });
+        logView.addView(clearView,clearParams);
+
         return this.logView =logView;
+    }
+
+    private void clearLog() {
+//        View logView = rootView.findViewWithTag(TAG_LOG_VIEW);
     }
 
     private void closeLogView() {
