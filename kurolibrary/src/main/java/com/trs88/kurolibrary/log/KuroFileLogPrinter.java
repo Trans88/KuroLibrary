@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * 本地文件日志打印器
+ * ???????????????
  */
 public class KuroFileLogPrinter implements KuroLogPrinter {
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
@@ -37,9 +37,9 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
 
 
     /**
-     * 创建KuroFilePrinter
-     * @param logPath log保存路径，如果是外部路径需要确保已经有外部存储的读写权限
-     * @param retentionTime log文件的有效时长，单位毫秒，<=0表示一直有效
+     * ????KuroFilePrinter
+     * @param logPath log????��???????????��????????????????��???��???
+     * @param retentionTime log???????��???????��????<=0???????��
      * @return KuroFilePrinter
      */
     public static synchronized KuroFileLogPrinter getInstance(String logPath, long retentionTime){
@@ -73,7 +73,7 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
     }
 
     /**
-     * 清楚过期Log
+     * ???????Log
      */
     private void cleanExpiredLog() {
         if (retentionTime<=0){
@@ -110,8 +110,8 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
         private volatile boolean running;
 
         /**
-         * 将log放入打印队列
-         * @param log 要被打印的log
+         * ??log??????????
+         * @param log ????????log
          */
         void put(KuroLogModel log){
             try {
@@ -122,7 +122,7 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
         }
 
         /**
-         * 判断工作线程是否在运行中
+         * ?��??????????????????
          * @return
          */
         boolean isRunning(){
@@ -132,7 +132,7 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
         }
 
         /**
-         * 启动工作线程
+         * ???????????
          */
         void start(){
             synchronized (this){
@@ -160,7 +160,7 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
 
 
     /**
-     * 基于BufferedWriter将log写入文件
+     * ????BufferedWriter??log��?????
      */
     private class LogWriter{
         private String preFileName;
@@ -176,16 +176,16 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
         }
 
         /**
-         * log写入前的准备操作
+         * log��????????????
          *
-         * @param newFileName 要保存log的文件名
-         * @return true 表示准备就绪
+         * @param newFileName ?????log???????
+         * @return true ??????????
          */
         boolean ready(String newFileName){
             preFileName =newFileName;
             logFile =new File(logPath,newFileName);
 
-            //当log不存在时创建log文件
+            //??log???????????log???
             if(!logFile.exists()){
                 try {
                     File parent = logFile.getParentFile();
@@ -214,7 +214,7 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
         }
 
         /**
-         * 关闭bufferedWriter
+         * ???bufferedWriter
          * @return
          */
         boolean close(){
@@ -234,8 +234,8 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
         }
 
         /**
-         * 将log写入文件
-         * @param flattenedLog 格式化后的log
+         * ??log��?????
+         * @param flattenedLog ????????log
          */
         void append(String flattenedLog){
             try {

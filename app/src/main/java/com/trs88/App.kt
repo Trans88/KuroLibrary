@@ -2,10 +2,7 @@ package com.trs88
 
 import android.app.Application
 import com.google.gson.Gson
-import com.trs88.kurolibrary.log.KuroConsolePrinter
-import com.trs88.kurolibrary.log.KuroLogConfig
-import com.trs88.kurolibrary.log.KuroLogManager
-import com.trs88.kurolibrary.log.KuroLogType
+import com.trs88.kurolibrary.log.*
 
 class App:Application() {
     override fun onCreate() {
@@ -32,6 +29,6 @@ class App:Application() {
             override fun printLogLevel(): Int {
                 return KuroLogType.V
             }
-        },KuroConsolePrinter())
+        },KuroConsolePrinter(),KuroFileLogPrinter.getInstance(applicationContext.cacheDir.absolutePath, 0))
     }
 }
