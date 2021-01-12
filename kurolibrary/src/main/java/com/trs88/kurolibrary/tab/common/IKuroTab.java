@@ -8,6 +8,7 @@ import androidx.annotation.Px;
  * @param <D>
  */
 public interface IKuroTab<D> extends IKuroTabLayout.OnTabSelectedListener<D> {
+
     void setKuroTabInfo(@NonNull D data);
 
     /**

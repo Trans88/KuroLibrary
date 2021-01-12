@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface IKuroTabLayout<Tab extends ViewGroup, D> {
     //根据数据查找对应的Tab
-    Tab findTab(@NonNull D data);
+    Tab findTab(@NonNull D info);
 
     //添加监听器
     void addTabSelectedChangeListener(OnTabSelectedListener<D> listener);
