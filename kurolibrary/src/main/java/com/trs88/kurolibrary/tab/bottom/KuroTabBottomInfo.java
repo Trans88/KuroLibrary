@@ -3,13 +3,18 @@ package com.trs88.kurolibrary.tab.bottom;
 import android.graphics.Bitmap;
 
 import androidx.fragment.app.Fragment;
-//这里Color主要希望可扩展，希望能用int和string的color
+
+/**
+ * ButtomItem对应的model
+ * @param <Color> 这里Color主要希望可扩展，希望能用int和string的color
+ */
 public class KuroTabBottomInfo<Color> {
     public enum TabType {
         BITMAP, ICON
     }
 
     public Class<? extends Fragment> fragment;
+
     public String name;
     public Bitmap defaultBitmap;
     public Bitmap selectedBitmap;

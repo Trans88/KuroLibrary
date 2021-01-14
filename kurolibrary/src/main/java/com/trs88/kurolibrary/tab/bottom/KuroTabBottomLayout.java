@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * 存放bottom和上部布局的layout
+ */
 public class KuroTabBottomLayout extends FrameLayout implements IKuroTabLayout<KuroTabBottom,KuroTabBottomInfo<?>> {
     private static final String TAG_TAB_BOTTOM= "TAG_TAB_BOTTOM";
     private List<OnTabSelectedListener<KuroTabBottomInfo<?>>> tabSelectedListeners =new ArrayList<>();
@@ -114,7 +117,7 @@ public class KuroTabBottomLayout extends FrameLayout implements IKuroTabLayout<K
             params.leftMargin =i*width; //依次向右排列
 
             KuroTabBottom tabBottom =new KuroTabBottom(getContext());
-            //todo 这里会不会有问题
+
             tabSelectedListeners.add(tabBottom);
             tabBottom.setKuroTabInfo(info);
 
@@ -153,6 +156,9 @@ public class KuroTabBottomLayout extends FrameLayout implements IKuroTabLayout<K
         this.bottomLineColor = bottomLineColor;
     }
 
+    /**
+     * 添加BottomLine
+     */
     private void addBottomLine(){
         View bottomLine =new View(getContext());
         bottomLine.setBackgroundColor(Color.parseColor(bottomLineColor));
@@ -170,6 +176,9 @@ public class KuroTabBottomLayout extends FrameLayout implements IKuroTabLayout<K
         this.selectedInfo =nextInfo;
     }
 
+    /**
+     * 添加白色背景
+     */
     private void addBackground(){
         View view = LayoutInflater.from(getContext()).inflate(R.layout.kuro_bottom_layout_bg,null);
         LayoutParams params =new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, KuroDisplayUtil.dp2px(tabBottomHeight,getResources()));

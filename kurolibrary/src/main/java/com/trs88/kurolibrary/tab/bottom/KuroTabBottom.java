@@ -18,6 +18,9 @@ import androidx.annotation.Nullable;
 import com.trs88.kurolibrary.R;
 import com.trs88.kurolibrary.tab.common.IKuroTab;
 
+/**
+ * 底部导航栏单个Item
+ */
 public class KuroTabBottom extends RelativeLayout implements IKuroTab<KuroTabBottomInfo<?>> {
     private KuroTabBottomInfo<?> tabInfo;
     private ImageView tabImageView;
@@ -37,6 +40,9 @@ public class KuroTabBottom extends RelativeLayout implements IKuroTab<KuroTabBot
         init();
     }
 
+    /**
+     * 初始化item
+     */
     private void init() {
         LayoutInflater.from(getContext()).inflate(R.layout.kuro_tab_bottom, this);
         tabImageView = findViewById(R.id.iv_image);
