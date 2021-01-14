@@ -1,4 +1,4 @@
-package com.trs88.kurolibrary.tab.bottom;
+package com.trs88.kuro_ui.tab.bottom;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -15,8 +15,8 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.trs88.kurolibrary.R;
-import com.trs88.kurolibrary.tab.common.IKuroTab;
+import com.trs88.kuro_ui.R;
+import com.trs88.kuro_ui.tab.common.IKuroTab;
 
 /**
  * 底部导航栏单个Item

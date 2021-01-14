@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.trs88.kuro_library.R
-import com.trs88.kurolibrary.tab.bottom.KuroTabBottomInfo
-import com.trs88.kurolibrary.tab.bottom.KuroTabBottomLayout
+import com.trs88.kuro_ui.tab.bottom.KuroTabBottomInfo
+import com.trs88.kuro_ui.tab.bottom.KuroTabBottomLayout
 import com.trs88.kurolibrary.util.KuroDisplayUtil
 import kotlinx.android.synthetic.main.activity_kuro_tab_bottom_demo.*
 
@@ -21,8 +21,8 @@ class KuroTabBottomDemoActivity : AppCompatActivity() {
 
     private fun initTabBottom() {
         kuro_tab_layout.setTabAlpha(0.85f)
-        val bottomInfoList: MutableList<KuroTabBottomInfo<*>> = ArrayList()
-        val homeInfo = KuroTabBottomInfo(
+        val bottomInfoList: MutableList<com.trs88.kuro_ui.tab.bottom.KuroTabBottomInfo<*>> = ArrayList()
+        val homeInfo = com.trs88.kuro_ui.tab.bottom.KuroTabBottomInfo(
             "首页",
             "fonts/iconfont.ttf",
             getString(R.string.if_home),
@@ -30,7 +30,7 @@ class KuroTabBottomDemoActivity : AppCompatActivity() {
             "#ff656667",
             "#ffd44949"
         )
-        val infoRecommend = KuroTabBottomInfo(
+        val infoRecommend = com.trs88.kuro_ui.tab.bottom.KuroTabBottomInfo(
             "收藏",
             "fonts/iconfont.ttf",
             getString(R.string.if_favorite),
@@ -50,13 +50,14 @@ class KuroTabBottomDemoActivity : AppCompatActivity() {
 
         val bitmap =BitmapFactory.decodeResource(resources,R.drawable.fire,null)
 
-        val infoCategory =KuroTabBottomInfo<String>(
-            "分类",
-            bitmap,
-            bitmap
-        )
+        val infoCategory =
+            com.trs88.kuro_ui.tab.bottom.KuroTabBottomInfo<String>(
+                "分类",
+                bitmap,
+                bitmap
+            )
 
-        val infoChat = KuroTabBottomInfo(
+        val infoChat = com.trs88.kuro_ui.tab.bottom.KuroTabBottomInfo(
             "推荐",
             "fonts/iconfont.ttf",
             getString(R.string.if_recommend),
@@ -66,7 +67,7 @@ class KuroTabBottomDemoActivity : AppCompatActivity() {
             "#ffd44949"
         )
 
-        val infoProfile = KuroTabBottomInfo(
+        val infoProfile = com.trs88.kuro_ui.tab.bottom.KuroTabBottomInfo(
             "我的",
             "fonts/iconfont.ttf",
             getString(R.string.if_profile),

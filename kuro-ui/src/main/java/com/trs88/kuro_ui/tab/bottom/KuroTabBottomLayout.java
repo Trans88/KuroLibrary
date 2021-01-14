@@ -1,4 +1,4 @@
-package com.trs88.kurolibrary.tab.bottom;
+package com.trs88.kuro_ui.tab.bottom;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -15,9 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.trs88.kurolibrary.R;
+import com.trs88.kuro_ui.R;
+import com.trs88.kuro_ui.tab.common.IKuroTabLayout;
 import com.trs88.kurolibrary.log.KuroLog;
-import com.trs88.kurolibrary.tab.common.IKuroTabLayout;
 import com.trs88.kurolibrary.util.KuroDisplayUtil;
 import com.trs88.kurolibrary.util.KuroViewUtil;
 

@@ -4,10 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.trs88.kuro_library.R
 import com.trs88.kurolibrary.log.*
-import com.trs88.kurolibrary.tab.bottom.KuroTabBottomInfo
+import com.trs88.kuro_ui.tab.bottom.KuroTabBottomInfo
 import kotlinx.android.synthetic.main.activity_log_demo.*
 import kotlinx.android.synthetic.main.activity_log_demo.tab_bottom
-import kotlinx.android.synthetic.main.activity_main.*
 
 class LogDemoActivity : AppCompatActivity() {
     var viewPrinter:KuroViewPrinter? =null
@@ -16,7 +15,7 @@ class LogDemoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_demo)
 
-        val homeInfo = KuroTabBottomInfo(
+        val homeInfo = com.trs88.kuro_ui.tab.bottom.KuroTabBottomInfo(
             "首页",
             "fonts/iconfont.ttf",
             getString(R.string.if_home),

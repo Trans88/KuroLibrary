@@ -1,4 +1,4 @@
-package com.trs88.kurolibrary.tab.common;
+package com.trs88.kuro_ui.tab.common;
 
 import android.view.ViewGroup;
 

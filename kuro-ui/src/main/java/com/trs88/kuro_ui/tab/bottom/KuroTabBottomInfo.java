@@ -1,4 +1,4 @@
-package com.trs88.kurolibrary.tab.bottom;
+package com.trs88.kuro_ui.tab.bottom;
 
 import android.graphics.Bitmap;
 
