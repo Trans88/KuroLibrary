@@ -43,19 +43,16 @@ public class KuroTabBottomLayout extends FrameLayout implements IKuroTabLayout<K
     private List<KuroTabBottomInfo<?>> infoList;
 
     public KuroTabBottomLayout(@NonNull Context context) {
-        super(context);
+        this(context,null);
     }
 
     public KuroTabBottomLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs,0);
     }
 
     public KuroTabBottomLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-    public KuroTabBottomLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+        setVerticalScrollBarEnabled(false);
     }
 
     @Override
