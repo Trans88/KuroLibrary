@@ -10,18 +10,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.trs88.demo.KuroTabTopDemoActivity">
+        <activity android:name="com.trs88.demo.refresh.KuroRefreshDemoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.trs88.demo.tab.KuroTabBottomDemoActivity">
+        <activity android:name="com.trs88.demo.KuroTabTopDemoActivity">
 
         </activity>
-        <activity android:name="com.trs88.demo.LogDemoActivity"></activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name="com.trs88.demo.tab.KuroTabBottomDemoActivity"></activity>
+        <activity android:name="com.trs88.demo.LogDemoActivity" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

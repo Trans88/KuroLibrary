@@ -27,15 +27,16 @@ public class KuroTabTopLayout extends HorizontalScrollView implements IKuroTabLa
     private int tabWith;
 
     public KuroTabTopLayout(Context context) {
-        super(context);
+        this(context,null);
     }
 
     public KuroTabTopLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs,0);
     }
 
     public KuroTabTopLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setVerticalScrollBarEnabled(false);
     }
 
     @Override
@@ -195,7 +196,9 @@ public class KuroTabTopLayout extends HorizontalScrollView implements IKuroTabLa
                 return tabWith;
             } else if (rect.left > 0) {
                 //显示部分
+                //todo 最左边的控件没显示完全点击不会自动滚动
                 return rect.left;
+
             }
 
             return 0;

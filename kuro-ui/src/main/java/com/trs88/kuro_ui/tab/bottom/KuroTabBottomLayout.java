@@ -52,7 +52,7 @@ public class KuroTabBottomLayout extends FrameLayout implements IKuroTabLayout<K
 
     public KuroTabBottomLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setVerticalScrollBarEnabled(false);
+
     }
 
     @Override
