@@ -58,6 +58,4 @@ public class KuroLottieOverView extends KuroOverView {
         pullAnimationView.setProgress(0f);
         pullAnimationView.cancelAnimation();
     }
-
-
 }
