@@ -96,6 +96,7 @@ public class KuroBannerAdapter extends PagerAdapter {
             realPosition = position % getRealCount();
         }
         KuroBannerViewHolder viewHolder = mCacheViews.get(realPosition);
+
         if (container.equals(viewHolder.rootView.getParent())) {
             container.removeView(viewHolder.rootView);
         }
@@ -129,6 +130,7 @@ public class KuroBannerAdapter extends PagerAdapter {
                 }
             }
         });
+
 
         if (mBindAdapter != null) {
             mBindAdapter.onBind(viewHolder, bannerMo, position);

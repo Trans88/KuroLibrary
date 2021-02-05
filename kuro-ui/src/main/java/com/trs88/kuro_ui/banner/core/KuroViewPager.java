@@ -16,6 +16,7 @@ import java.util.logging.LogRecord;
 /**
  * 实现自动翻页的ViewPager
  */
+//todo 想要实现可以控制每页展示的时间
 public class KuroViewPager extends ViewPager {
     private int mIntervalTime;
     /**
