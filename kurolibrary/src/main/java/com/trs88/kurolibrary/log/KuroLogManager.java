@@ -17,7 +17,42 @@ public class KuroLogManager {
     }
 
     public static KuroLogManager getInstance() {
+        if (instance ==null){
+            createDefaultKuroLogManager();
+        }
         return instance;
+    }
+
+    /**
+     * 创建默认的KuroLogManager配置，防止未初始化直接调用Kurolog报错
+     */
+    private static void createDefaultKuroLogManager() {
+        init(new KuroLogConfig() {
+            @Override
+            public int printLogLevel() {
+                return KuroLogType.V;
+            }
+
+            @Override
+            public String getGlobalTag() {
+                return "KuroLog";
+            }
+
+            @Override
+            public boolean enable() {
+                return true;
+            }
+
+            @Override
+            public boolean includeTread() {
+                return true;
+            }
+
+            @Override
+            public int stackTraceDepth() {
+                return 0;
+            }
+        },new KuroConsolePrinter());
     }
 
     public static void init(@NonNull KuroLogConfig config,KuroLogPrinter... printers){
