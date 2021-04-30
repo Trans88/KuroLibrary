@@ -1,17 +1,14 @@
 package com.trs88.kurolibrary.restful
 
 import android.util.Log
-import com.trs88.kurolibrary.restful.annotation.BaseUrl
-import com.trs88.kurolibrary.restful.annotation.GET
-import com.trs88.kurolibrary.restful.annotation.Headers
-import com.trs88.kurolibrary.restful.annotation.POST
+import com.trs88.kurolibrary.restful.annotation.*
 import java.lang.IllegalStateException
 import java.lang.reflect.Method
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 class MethodParser(
-    baseUrl: String,
+    val baseUrl: String,
     method: Method,
     args: Array<Any>
 ) {
@@ -21,6 +18,7 @@ class MethodParser(
     private var relativeUrl: String?=null
     private var returnType: Type? =null
     private var headers:MutableMap<String,String> = mutableMapOf()
+    private var parameters:MutableMap<String,String> = mutableMapOf()
 
     init {
         //parse method annotations such get headers,post,baseUrl
@@ -33,8 +31,14 @@ class MethodParser(
         parseMethodReturnType(method)
     }
 
+    companion object{
+        fun parse(baseUrl:String,method:Method,args:Array<Any>):MethodParser{
+            return MethodParser(baseUrl,method,args)
+        }
+    }
+
     private fun parseMethodReturnType(method: Method) {
-        if (method.returnType!=KuroCall::class){
+        if (method.returnType!=KuroCall::class.java){
             throw IllegalStateException(String.format("method %s must be type of KuroCall.class",method.name))
         }
         val genericReturnType = method.genericReturnType
@@ -50,7 +54,75 @@ class MethodParser(
     }
 
     private fun parseMethodParameters(method: Method, args: Array<Any>) {
+        val parameterAnnotations = method.parameterAnnotations
+        val equals = parameterAnnotations.size == args.size
+        require(equals){
+            String.format("arguments annotations count %s dont match expect count %s",parameterAnnotations.size,args.size)
+        }
 
+        for (index in args.indices) {
+            val annotations = parameterAnnotations[index]
+            require(annotations.size<=1){
+                "filed can only has one annotation:index =$index"
+            }
+            
+            val arg =args[index]
+
+            require(isPrimitive(arg)){
+                "Only supported 8 basic types or String for now ,index=$index"
+            }
+
+            val annotation =annotations[0]
+            if (annotation is Filed){
+                val key = annotation.value
+                val value = args[index]
+                parameters[key] =value.toString()
+            }else if (annotation is Path){
+                val replaceName = annotation.value
+                val replacement = arg.toString()
+                if (replaceName!=null&& replacement!=null){
+                    val newRelativeUrl = relativeUrl?.replace("{$replaceName}", replacement)
+                    relativeUrl =newRelativeUrl
+                }
+            }else if(annotation is Headers){
+                val headersArray = annotation.value
+                for (header in headersArray) {
+//                    val colon = header.indexOf(":")
+//                    check(!(colon==0||colon ==-1)){
+//                        String.format("@headers value must be in the form [name:value],but found [%s]",header)
+//                    }
+
+                    val name = header
+                    val value =args[index]
+                    headers[name] =value.toString()
+                }
+            }else{
+                throw IllegalStateException("cannot handle parameter annotation:${annotation.javaClass.toString()}")
+            }
+        }
+    }
+
+    /**
+     * 判断是否是基础数据类型和String类型
+     */
+    private fun isPrimitive(value: Any) :Boolean{
+        if (value.javaClass ==String::class.java){
+            return true
+        }
+
+        try {
+            val field = value.javaClass.getField("TYPE")
+            val clazz = field[null] as Class<*>
+            if (clazz.isPrimitive){
+                return true
+            }
+        }catch (e:IllegalAccessException){
+            e.printStackTrace()
+        }catch (e:NoSuchFieldException){
+            e.printStackTrace()
+        }
+        return false
+        
     }
 
     private fun parseMethodAnnotations(method: Method) {
@@ -80,17 +152,27 @@ class MethodParser(
             }else{
                 throw IllegalStateException("cannot handle method annotation:"+annotation.javaClass.toString())
             }
-
-            require(!(httpMethod!=KuroRequest.METHOD.GET)&&!(httpMethod!=KuroRequest.METHOD.POST)){
-                String.format("method %s must has one of GET,POST",method.name)
-            }
         }
 
+        require((httpMethod == KuroRequest.METHOD.GET) || (httpMethod == KuroRequest.METHOD.POST)){
+            String.format("method %s must has one of GET,POST",method.name)
+        }
+
+
+        if (domainUrl ==null){
+            domainUrl =baseUrl
+        }
     }
 
-    companion object{
-        fun parse(baseUrl:String,method:Method,args:Array<Any>):MethodParser{
-            return MethodParser(baseUrl,method,args)
-        }
+    fun newRequest():KuroRequest {
+        val request=KuroRequest()
+        request.domainUrl =domainUrl
+        request.returnType =returnType
+        request.headers =headers
+        request.httpMethod =httpMethod
+        request.parameters =parameters
+        request.relativeUrl =relativeUrl
+        request.formPost =formPost
+        return request
     }
 }
