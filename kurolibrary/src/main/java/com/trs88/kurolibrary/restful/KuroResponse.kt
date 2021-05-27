@@ -5,7 +5,8 @@ package com.trs88.kurolibrary.restful
  */
 open class KuroResponse <T>{
     companion object{
-        val SUCCESS:Int =0
+        const val SUCCESS:Int =0
+        const val CACHE_SUCCESS:Int =304 //请求缓存成功
     }
 
     var rawData:String? =null//原始数据
