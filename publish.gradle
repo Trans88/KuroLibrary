@@ -1,0 +1,57 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+signing {
+    sign configurations.archives
+}
+
+group = "com.github.Trans88"
+//archivesBaseName = "KuroUi"
+archivesBaseName = "KuroLibrary"
+version = "0.0.3"
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment {
+                MavenDeployment deployment -> signing.signPom(deployment)
+            }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'KuroUi'
+                packaging 'jar'
+                description 'This is ui development . '
+                url 'https://github.com/Trans88/KuroLibrary'
+
+                scm {
+                    connection 'scm:git:https://github.com/Trans88/KuroLibrary.git'
+                    developerConnection 'scm:git:ssh://github.com/Trans88/KuroLibrary.git'
+                    url 'https://github.com/Trans88/KuroLibrary/tree/master'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'TRS'
+                        name 'TRS'
+                        email 'zbyzou@qq.com'
+                    }
+                }
+            }
+        }
+    }
+}
