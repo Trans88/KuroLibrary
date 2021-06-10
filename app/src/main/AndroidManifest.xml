@@ -23,17 +23,19 @@
 
         </activity>
         <activity android:name="com.trs88.demo.banner.KuroBannerDemoActivity">
+
+        </activity>
+        <activity android:name="com.trs88.demo.refresh.KuroRefreshDemoActivity"></activity>
+        <activity android:name="com.trs88.demo.KuroTabTopDemoActivity" />
+        <activity android:name="com.trs88.demo.tab.KuroTabBottomDemoActivity" />
+        <activity android:name="com.trs88.demo.LogDemoActivity" />
+        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.trs88.demo.refresh.KuroRefreshDemoActivity"></activity>
-        <activity android:name="com.trs88.demo.KuroTabTopDemoActivity" />
-        <activity android:name="com.trs88.demo.tab.KuroTabBottomDemoActivity" />
-        <activity android:name="com.trs88.demo.LogDemoActivity" />
-        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

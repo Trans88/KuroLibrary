@@ -10,8 +10,6 @@ import java.lang.reflect.Type
 import java.net.URLEncoder
 
 open class KuroRequest {
-
-
     private var cacheStrategyKey: String=""
 
     @METHOD

@@ -45,4 +45,13 @@ dependencies {
     //room
     implementation "android.arch.persistence.room:runtime:2.2.0"
     kapt "android.arch.persistence.room:compiler:2.2.0"
+
+    //json解析
+    api 'com.squareup.retrofit2:converter-gson:2.7.1'
+
+    //网络请求框架
+    api 'com.squareup.okio:okio:2.3.0'
+    api 'com.squareup.okhttp3:okhttp:4.1.0'
+    api 'com.squareup.retrofit2:retrofit:2.7.1'
+    api 'com.squareup.retrofit2:converter-scalars:2.7.1'
 }

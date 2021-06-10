@@ -8,6 +8,6 @@ import androidx.room.PrimaryKey
 class Cache {
     @PrimaryKey(autoGenerate = false)
     @NonNull
-    var key: String = ""
+    var cacheKey: String = ""
     var data: ByteArray? = null
 }

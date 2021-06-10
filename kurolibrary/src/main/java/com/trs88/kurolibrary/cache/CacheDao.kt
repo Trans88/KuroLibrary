@@ -7,7 +7,7 @@ interface CacheDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveCache(cache: Cache)
 
-    @Query("select * from cache where 'key'=:key")
+    @Query("select * from cache where cacheKey=:key")
     fun getCache(key:String):Cache?
 
     @Delete()

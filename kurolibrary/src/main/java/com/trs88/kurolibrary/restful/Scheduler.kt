@@ -35,7 +35,7 @@ class Scheduler(
 
             val response = delegate.execute()
 
-            savaCacheIfNeed(response)
+            saveCacheIfNeed(response)
 
             dispatchInterceptor(request, response)
 
@@ -48,6 +48,7 @@ class Scheduler(
                 KuroExecutor.execute(runnable = Runnable {
                     val cacheResponse =readCache<T>(request)
                     if (cacheResponse.data!=null){
+//                        KuroLog.d("enqueue,cache data:${cacheResponse.data}")
                         //抛到主线程中
                         MainHandler.sendAtFrontOfQueue(runnable = Runnable {
                             callback.onSuccess(cacheResponse)
@@ -59,7 +60,7 @@ class Scheduler(
             val response = delegate.enqueue(object : KuroCallback<T> {
                 override fun onSuccess(response: KuroResponse<T>) {
                     dispatchInterceptor(request, response)
-                    savaCacheIfNeed(response)
+                    saveCacheIfNeed(response)
                     callback.onSuccess(response)
                 }
 
@@ -72,7 +73,7 @@ class Scheduler(
             return response
         }
 
-        private fun savaCacheIfNeed(response: KuroResponse<T>) {
+        private fun saveCacheIfNeed(response: KuroResponse<T>) {
             if (request.cacheStrategy ==CacheStrategy.CACHE_FIRST||request.cacheStrategy ==CacheStrategy.NET_CACHE){
                 if (response.data!=null){
                     KuroExecutor.execute(runnable = Runnable {
@@ -87,6 +88,7 @@ class Scheduler(
             val cacheKey =request.getCacheKey()
             val cache=KuroStorage.getCache<T>(cacheKey)
             val cacheResponse =KuroResponse<T>()
+            KuroLog.d("readCache:$cacheKey,data:$cache")
             cacheResponse.data =cache
             cacheResponse.code =KuroResponse.CACHE_SUCCESS
             cacheResponse.msg ="缓存获取成功"
@@ -94,7 +96,6 @@ class Scheduler(
         }
 
         private fun dispatchInterceptor(request: KuroRequest, response: KuroResponse<T>?) {
-
             InterceptorChain(request, response).dispatch()
         }
 
@@ -118,6 +119,10 @@ class Scheduler(
             }
 
             fun dispatch() {
+                if(interceptors.isEmpty()){
+                    return
+                }
+
                 val interceptor = interceptors[callIndex]
                 val intercept = interceptor.intercept(this)
                 callIndex++

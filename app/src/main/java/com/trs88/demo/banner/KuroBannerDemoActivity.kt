@@ -9,6 +9,10 @@ import com.trs88.kuro_ui.banner.core.KuroBanner
 import com.trs88.kuro_ui.banner.core.KuroBannerMo
 import com.trs88.kuro_ui.banner.indicator.KuroCircleIndicator
 import com.trs88.kuro_ui.banner.indicator.KuroIndicator
+import com.trs88.kurolibrary.log.KuroLog
+import com.trs88.kurolibrary.restful.KuroCallback
+import com.trs88.kurolibrary.restful.KuroResponse
+import com.trs88.kurolibrary.restful.retrofit.KuroApiFactory
 import kotlinx.android.synthetic.main.activity_kuro_banner_demo.*
 import kotlinx.android.synthetic.main.banner_item_layout.*
 
@@ -57,6 +61,7 @@ class KuroBannerDemoActivity : AppCompatActivity() {
             isVisiblePlay =isChecked
             initView(kuroIndicator,autoPlay,isVisiblePlay)
         }
+
     }
 
     private fun initView(kuroIndicator: KuroIndicator<*>?,autoPlay:Boolean,isVisiblePlay:Boolean) {

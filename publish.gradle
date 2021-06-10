@@ -8,7 +8,7 @@ signing {
 group = "com.github.Trans88"
 //archivesBaseName = "KuroUi"
 archivesBaseName = "KuroLibrary"
-version = "0.0.3"
+version = "0.0.6"
 
 uploadArchives {
     repositories {
@@ -26,7 +26,7 @@ uploadArchives {
             }
 
             pom.project {
-                name 'KuroUi'
+                name 'KuroLibrary'
                 packaging 'jar'
                 description 'This is ui development . '
                 url 'https://github.com/Trans88/KuroLibrary'
