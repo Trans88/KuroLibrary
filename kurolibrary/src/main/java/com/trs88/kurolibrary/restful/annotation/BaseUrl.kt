@@ -5,6 +5,6 @@ import java.lang.annotation.RetentionPolicy
 /**
  * @BaseUrl("https://xxxx/xxxx")
  */
-@Target(AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.FUNCTION,AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class BaseUrl (val value:String)

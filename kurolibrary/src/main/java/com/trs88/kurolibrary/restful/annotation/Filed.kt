@@ -7,4 +7,4 @@ import java.lang.annotation.RetentionPolicy
  */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class Filed (val value:String)
+annotation class Filed (val value:String,val isFile:Boolean =false)

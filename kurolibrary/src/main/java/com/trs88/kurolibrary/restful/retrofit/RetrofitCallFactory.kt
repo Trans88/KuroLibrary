@@ -3,18 +3,17 @@ package cn.trans88.taxiappkotlin.net
 import android.util.Log
 import com.trs88.kurolibrary.log.KuroLog
 import com.trs88.kurolibrary.restful.*
-import okhttp3.FormBody
+import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.*
+import java.io.File
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import java.util.concurrent.TimeUnit.SECONDS
@@ -82,22 +81,55 @@ class RetrofitCallFactory(val baseUrl:String):KuroCall.Factory {
                 }
                 KuroRequest.METHOD.POST -> {
                     val parameters = request.parameters
-                    val builder = FormBody.Builder()
-                    var requestBody:RequestBody?=null
+                    val files = request.files
                     val jsonObject =JSONObject()
-                    for ((key:String,value:String) in parameters!!){
+                    var requestBody:RequestBody?=null
+
+                    if (request.isFile){
+                        KuroLog.i("request is file")
+                        val builder =MultipartBody.Builder().setType(MultipartBody.FORM)
+                        if (!files.isNullOrEmpty()){
+                            for ((key:String,file:File) in files){
+                                val parse = ("application/json;charset=UTF-8").toMediaTypeOrNull()
+                                val body = file.asRequestBody(parse)
+                                KuroLog.i("request file name is ${file.name}")
+                                builder.addFormDataPart(key,file.name,body)
+                            }
+                        }
+                        for ((key:String,value:String) in parameters!!){
+                            if (request.formPost){
+                                builder.addFormDataPart(key,value)
+                            }else{
+                                jsonObject.put(key,value)
+                            }
+                        }
+
                         if (request.formPost){
-                            builder.add(key,value)
+                            requestBody =builder.build()
                         }else{
-                            jsonObject.put(key,value)
+                            requestBody =jsonObject.toString().toRequestBody("application/json;utf-8".toMediaTypeOrNull())
+                        }
+
+
+                    }else{
+                        val builder = FormBody.Builder()
+
+//                    val jsonObject =JSONObject()
+                        for ((key:String,value:String) in parameters!!){
+                            if (request.formPost){
+                                builder.add(key,value)
+                            }else{
+                                jsonObject.put(key,value)
+                            }
+                        }
+
+                        if (request.formPost){
+                            requestBody =builder.build()
+                        }else{
+                            requestBody =jsonObject.toString().toRequestBody("application/json;utf-8".toMediaTypeOrNull())
                         }
                     }
 
-                    if (request.formPost){
-                        requestBody =builder.build()
-                    }else{
-                        requestBody =jsonObject.toString().toRequestBody("application/json;utf-8".toMediaTypeOrNull())
-                    }
 
                     return apiService.post(request.headers,request.endPointUrl(),requestBody)
                 }

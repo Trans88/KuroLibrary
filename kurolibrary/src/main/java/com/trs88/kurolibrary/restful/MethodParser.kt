@@ -2,6 +2,7 @@ package com.trs88.kurolibrary.restful
 
 import android.util.Log
 import com.trs88.kurolibrary.restful.annotation.*
+import java.io.File
 import java.lang.IllegalStateException
 import java.lang.reflect.Method
 import java.lang.reflect.ParameterizedType
@@ -20,6 +21,8 @@ class MethodParser(
     private var headers:MutableMap<String,String> = mutableMapOf()
     private var parameters:MutableMap<String,String> = mutableMapOf()
     private var cacheStrategy:Int =CacheStrategy.NET_ONLY
+    private var files: MutableMap<String, File> = mutableMapOf()
+    private var isFile : Boolean =false
 
     init {
         //parse method annotations such get headers,post,baseUrl
@@ -70,18 +73,28 @@ class MethodParser(
             val arg =args[index]
 
             require(isPrimitive(arg)){
-                "Only supported 8 basic types or String for now ,index=$index"
+                "Only supported 8 basic types、String or File for now ,index=$index"
             }
 
             val annotation =annotations[0]
             if (annotation is Filed){
                 val key = annotation.value
                 val value = args[index]
-                parameters[key] =value.toString()
+                if (annotation.isFile){
+                    isFile = true
+                    if (value is File){
+                        files[key] =value
+                    }else{
+                        throw IllegalArgumentException("annotation isFile is true but this value not File,please check it")
+                    }
+
+                }else{
+                    parameters[key] =value.toString()
+                }
             }else if (annotation is Path){
                 val replaceName = annotation.value
                 val replacement = arg.toString()
-                if (replaceName!=null&& replacement!=null){
+                if (replaceName!=null && replacement!=null){
                     val newRelativeUrl = relativeUrl?.replace("{$replaceName}", replacement)
                     relativeUrl =newRelativeUrl
                 }
@@ -94,6 +107,8 @@ class MethodParser(
                     val value =args[index]
                     headers[name] =value.toString()
                 }
+            }else if (annotation is BaseUrl){
+                domainUrl = annotation.value
             }else{
                 throw IllegalStateException("cannot handle parameter annotation:${annotation.javaClass.toString()}")
             }
@@ -105,6 +120,10 @@ class MethodParser(
      */
     private fun isPrimitive(value: Any) :Boolean{
         if (value.javaClass ==String::class.java){
+            return true
+        }
+
+        if (value.javaClass == File::class.java){
             return true
         }
 
@@ -173,6 +192,8 @@ class MethodParser(
         request.parameters =parameters
         request.relativeUrl =relativeUrl
         request.formPost =formPost
+        request.isFile =isFile
+        request.files =files
         request.cacheStrategy =cacheStrategy
         return request
     }

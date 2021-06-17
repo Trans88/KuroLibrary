@@ -43,7 +43,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
     //room
-    implementation "android.arch.persistence.room:runtime:2.2.0"
+    api "android.arch.persistence.room:runtime:2.2.0"
     kapt "android.arch.persistence.room:compiler:2.2.0"
 
     //json解析

@@ -24,7 +24,7 @@ open class KuroRestful(val baseUrl: String, val callFactory: KuroCall.Factory) {
         return Proxy.newProxyInstance(
             service.classLoader,
             arrayOf<Class<*>>(service)
-        ) { proxy, method, args ->
+        ) { _, method, args ->
             var methodParser = methodService[method]
             if (methodParser == null) {
                 methodParser = MethodParser.parse(baseUrl, method, args)
