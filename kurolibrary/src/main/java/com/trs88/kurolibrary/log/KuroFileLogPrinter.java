@@ -1,5 +1,7 @@
 package com.trs88.kurolibrary.log;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import java.io.BufferedWriter;
@@ -55,7 +57,7 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
 
     private void doPrint(KuroLogModel logModel){
         String lastFileName =writer.getPreFileName();
-        if (lastFileName ==null){
+//        if (lastFileName ==null){
             String newFileName =genFileName();
             if (writer.isReady()){
                 writer.close();
@@ -64,7 +66,13 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
             if (!writer.ready(newFileName)){
                 return;
             }
-        }
+//        }
+//        else {
+//            if (!writer.ready(lastFileName)){
+//                Log.e("KuroFileLogPrinter","日志打印未准备好");
+//                return;
+//            }
+//        }
 
         writer.append(logModel.flattenedLog());
     }
@@ -77,6 +85,7 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
 
     /**
      * 清除过期log
+     * todo 可以考虑每次写入的时候都做这个检查
      */
     private void cleanExpiredLog() {
         if (retentionTime<=0){
@@ -190,7 +199,7 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
             preFileName =newFileName;
             logFile =new File(logPath,newFileName);
 
-            //??log???????????log???
+            // 当log文件不存在时创建log文件
             if(!logFile.exists()){
                 try {
                     File parent = logFile.getParentFile();
@@ -207,7 +216,9 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
             }
 
             try {
-                bufferedWriter =new BufferedWriter(new FileWriter(logFile,true));
+                if (bufferedWriter ==null){
+                    bufferedWriter =new BufferedWriter(new FileWriter(logFile,true));
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 preFileName =null;
@@ -221,20 +232,18 @@ public class KuroFileLogPrinter implements KuroLogPrinter {
         /**
          * 关闭bufferedWriter
          */
-        boolean close(){
+        void close(){
             if (bufferedWriter!=null){
                 try {
                     bufferedWriter.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return false;
                 }finally {
                     bufferedWriter = null;
                     preFileName = null;
                     logFile = null;
                 }
             }
-            return true;
         }
 
         /**

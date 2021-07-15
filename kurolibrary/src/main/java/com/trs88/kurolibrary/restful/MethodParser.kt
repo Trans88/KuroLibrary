@@ -1,6 +1,7 @@
 package com.trs88.kurolibrary.restful
 
 import android.util.Log
+import com.trs88.kurolibrary.log.KuroLog
 import com.trs88.kurolibrary.restful.annotation.*
 import java.io.File
 import java.lang.IllegalStateException
@@ -100,15 +101,12 @@ class MethodParser(
                 }
             }else if (annotation is CacheStrategy){
                 cacheStrategy = arg as Int
-            }else if(annotation is Headers){
-                val headersArray = annotation.value
-                for (header in headersArray) {
-                    val name = header
-                    val value =args[index]
-                    headers[name] =value.toString()
-                }
+            }else if(annotation is Header){
+                val name = annotation.value
+                headers[name] =arg.toString()
             }else if (annotation is BaseUrl){
-                domainUrl = annotation.value
+                domainUrl = arg.toString()
+//                KuroLog.i("domainUrl :$domainUrl")
             }else{
                 throw IllegalStateException("cannot handle parameter annotation:${annotation.javaClass.toString()}")
             }

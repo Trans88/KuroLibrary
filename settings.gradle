@@ -1,5 +1,4 @@
-rootProject.name='Kuro-library'
 include ':app'
 include ':kurolibrary'
 include ':kuro-ui'
-include ':kuro-ui'
+include ':kuro-debugtool'
