@@ -43,7 +43,7 @@ public class KuroRefreshLayout extends FrameLayout implements KuroRefresh {
     }
 
     private void init(Context context) {
-        KuroLog.i(TAG,"init KuroRefreshLayout");
+//        KuroLog.i(TAG,"init KuroRefreshLayout");
         mGestureDetector = new GestureDetector(getContext(), kuroGestureDetector);
         mAutoScroller = new AutoScroller();
         //默认初始化KuroTextOverView
@@ -58,7 +58,7 @@ public class KuroRefreshLayout extends FrameLayout implements KuroRefresh {
     @Override
     public void refreshFinished() {
         View head = getChildAt(0);
-        KuroLog.i(TAG, "refreshFinished head-bottom:" + head.getBottom());
+//        KuroLog.i(TAG, "refreshFinished head-bottom:" + head.getBottom());
         mKuroOverView.onFinish();
         mKuroOverView.setState(KuroRefreshState.STATE_INIT);
         int bottom = head.getBottom();
@@ -175,7 +175,7 @@ public class KuroRefreshLayout extends FrameLayout implements KuroRefresh {
         View child = getChildAt(1);
         if (head != null && child != null) {
             int childTop = child.getTop();
-            KuroLog.i(TAG,"onLayout head-height:" + head.getMeasuredHeight());
+//            KuroLog.i(TAG,"onLayout head-height:" + head.getMeasuredHeight());
             if (mState == KuroRefreshState.STATE_REFRESH) {
                 head.layout(0, mKuroOverView.mPullRefreshHeight - head.getMeasuredHeight(), right, mKuroOverView.mPullRefreshHeight);
                 child.layout(0, mKuroOverView.mPullRefreshHeight, right, mKuroOverView.mPullRefreshHeight + child.getMeasuredHeight());
@@ -190,7 +190,7 @@ public class KuroRefreshLayout extends FrameLayout implements KuroRefresh {
                 other = getChildAt(i);
                 other.layout(0, top, right, bottom);
             }
-            KuroLog.i(TAG, "onLayout head-bottom:" + head.getBottom());
+//            KuroLog.i(TAG, "onLayout head-bottom:" + head.getBottom());
         }
     }
 
@@ -212,13 +212,13 @@ public class KuroRefreshLayout extends FrameLayout implements KuroRefresh {
      * @return
      */
     private boolean moveDown(int offsetY, boolean nonAuto) {
-        KuroLog.i(TAG, "changeState:" + nonAuto);
+//        KuroLog.i(TAG, "changeState:" + nonAuto);
         View head = getChildAt(0);
         View child = getChildAt(1);
         int childTop = child.getTop() + offsetY;
-        KuroLog.i(TAG,"-----", "moveDown head-bottom:" + head.getBottom() + ",child.getTop():" + child.getTop() + ",offsetY:" + offsetY);
+//        KuroLog.i(TAG,"-----", "moveDown head-bottom:" + head.getBottom() + ",child.getTop():" + child.getTop() + ",offsetY:" + offsetY);
         if (childTop <= 0) {
-            KuroLog.i(TAG, "childTop<=0,mState" + mState);
+//            KuroLog.i(TAG, "childTop<=0,mState" + mState);
             //异常情况的补充
             offsetY = -child.getTop();
             //移动head与child的位置到原始位置
@@ -241,7 +241,7 @@ public class KuroRefreshLayout extends FrameLayout implements KuroRefresh {
             head.offsetTopAndBottom(offsetY);
             child.offsetTopAndBottom(offsetY);
             if (childTop == mKuroOverView.mPullRefreshHeight && mState == KuroRefreshState.STATE_OVER_RELEASE) {
-                KuroLog.i(TAG, "refresh，childTop：" + childTop);
+//                KuroLog.i(TAG, "refresh，childTop：" + childTop);
                 // 下拉刷新完成
                 refresh();
             }

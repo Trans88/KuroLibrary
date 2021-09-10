@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import com.bumptech.glide.Glide
+//import com.bumptech.glide.Glide
 import com.trs88.kuro_library.R
 import com.trs88.kuro_ui.banner.core.KuroBanner
 import com.trs88.kuro_ui.banner.core.KuroBannerMo

@@ -30,6 +30,7 @@ public abstract class KuroOverView extends FrameLayout {
      * 最大阻尼
      */
     public float maxDamp =2.2f;
+
     public KuroOverView(@NonNull Context context) {
         this(context,null);
     }

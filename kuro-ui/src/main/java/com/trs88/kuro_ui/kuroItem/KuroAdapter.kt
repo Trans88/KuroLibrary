@@ -7,20 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.*
+import com.trs88.kurolibrary.activity.AppGlobals
+import com.trs88.kurolibrary.log.KuroLog
+import okhttp3.internal.notifyAll
 import java.lang.reflect.ParameterizedType
 
-class KuroAdapter(context:Context):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class KuroAdapter(context:Context):Adapter<ViewHolder>() {
     private var mContext: Context
     private var mInflater:LayoutInflater?=null
-    private var dataSets = ArrayList<KuroDateItem<*,RecyclerView.ViewHolder>>()
+    private var dataSets = java.util.ArrayList<KuroDateItem<*,out ViewHolder>>()
     //存放item的类型
-    private var typeArrays =SparseArray<KuroDateItem<*,RecyclerView.ViewHolder>>()
+    private var typeArrays =SparseArray<KuroDateItem<*,out ViewHolder>>()
     init {
         this.mContext =context
         this.mInflater = LayoutInflater.from(context)
     }
 
-    fun addItem(index:Int,item:KuroDateItem<*,RecyclerView.ViewHolder>,notify:Boolean){
+    /**
+     * 注册一条数据
+     */
+    fun addItem(index:Int,item:KuroDateItem<*,out ViewHolder>,notify:Boolean){
         if (index>0){
             //添加到指定位置
             dataSets.add(index,item)
@@ -31,14 +38,17 @@ class KuroAdapter(context:Context):RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         //刷新位置
         val notifyPos =if (index>0)index else dataSets.size-1
+
         if (notify){
             notifyItemInserted(notifyPos)
+//            notifyDataSetChanged()
         }
     }
 
-    fun addItems(items:List<KuroDateItem<*,RecyclerView.ViewHolder>>,notify: Boolean){
+    fun addItems(items:List<KuroDateItem<*,out ViewHolder>>, notify: Boolean){
         //当前列表的起始位置
         val start=dataSets.size
+
         for (item in items){
             dataSets.add(item)
         }
@@ -48,7 +58,10 @@ class KuroAdapter(context:Context):RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    fun removeItem(index: Int):KuroDateItem<*,RecyclerView.ViewHolder>?{
+    /**
+     * 移除对应下标的数据
+     */
+    fun removeItem(index: Int):KuroDateItem<*,out ViewHolder>?{
         if (index>0&& index<dataSets.size){
             val remove =dataSets.removeAt(index)
             notifyItemRemoved(index)
@@ -58,12 +71,6 @@ class KuroAdapter(context:Context):RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    fun removeItem(item:KuroDateItem<*,*>){
-        if (item!=null){
-            val index= dataSets.indexOf(item)
-            removeItem(index)
-        }
-    }
 
     override fun getItemViewType(position: Int): Int {
         val dateItem = dataSets[position]
@@ -77,31 +84,50 @@ class KuroAdapter(context:Context):RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         return type
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val dataItem = typeArrays.get(viewType)
         var view: View?=dataItem.getItemView(parent)
+
+        //如果直接获取视图获取不到，尝试从getItemLayoutRes里获取视图
         if (view ==null){
             val layoutRes =dataItem.getItemLayoutRes()
+//            KuroLog.e("layoutRes:$layoutRes")
             if (layoutRes<0){
                 throw RuntimeException("dataItem:${dataItem.javaClass.name} must override getItemView or getItemLayout")
             }
             view =mInflater!!.inflate(layoutRes,parent,false)
         }
 
-        return createViewHolderInternal(dataItem.javaClass,view)
+        return createViewHolderInternal(dataItem.javaClass,view!!)
     }
 
-    private fun createViewHolderInternal(javaClass: Class<KuroDateItem<*, RecyclerView.ViewHolder>>, view: View?): RecyclerView.ViewHolder {
+    /**
+     * 取出ViewHolder里标注的泛型
+     */
+    private fun createViewHolderInternal(javaClass: Class<KuroDateItem<*, out ViewHolder>>, view: View):ViewHolder {
+        //得到KuroDateItem对象
         val superClass = javaClass.genericSuperclass
+
+        //如果是参数泛型类型的
         if (superClass is ParameterizedType){
+            //返回KuroDateItem泛型参数的集合，也就是DATA、VH
             val arguments = superClass.actualTypeArguments
             for (argument in arguments) {
-                if (argument is Class<*> && RecyclerView.ViewHolder::class.java.isAssignableFrom(argument)){
-                    return argument.getConstructor(View::class.java).newInstance(view) as RecyclerView.ViewHolder
+                if (argument is Class<*> && ViewHolder::class.java.isAssignableFrom(argument)){
+                    try {
+                        //通过构造方法构造出反射的ViewHolder
+                        return argument.getConstructor(View::class.java).newInstance(view) as ViewHolder
+                    }catch (e:Throwable){
+                        e.printStackTrace()
+                    }
                 }
             }
         }
-        return object :RecyclerView.ViewHolder(view!!){}
+
+        KuroLog.i("创建ViewHolder失败")
+
+        //如果失败返回默认的ViewHolder
+        return object :ViewHolder(view){}
 
     }
 
@@ -109,7 +135,7 @@ class KuroAdapter(context:Context):RecyclerView.Adapter<RecyclerView.ViewHolder>
         return dataSets.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder:ViewHolder, position: Int) {
         val kuroDateItem = dataSets[position]
         kuroDateItem.onBindData(holder,position)
     }
@@ -120,6 +146,7 @@ class KuroAdapter(context:Context):RecyclerView.Adapter<RecyclerView.ViewHolder>
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
 
+        //如果是GridLayoutManager，为他设置spanSizeLookup 来控制一行几列
         val layoutManager = recyclerView.layoutManager
         if (layoutManager is GridLayoutManager){
             val spanCount =layoutManager.spanCount
@@ -140,6 +167,21 @@ class KuroAdapter(context:Context):RecyclerView.Adapter<RecyclerView.ViewHolder>
         val indexOf = dataSets.indexOf(kuroDateItem)
         notifyItemChanged(indexOf)
     }
+
+
+    fun removeItem(item:KuroDateItem<*,*>){
+        if (item!=null){
+            val index= dataSets.indexOf(item)
+            removeItem(index)
+        }
+    }
+
+    fun getPosition(kuroDateItem: KuroDateItem<*, *>):Int{
+        val indexOf = dataSets.indexOf(kuroDateItem)
+        return indexOf
+    }
+
+
 
 
 }

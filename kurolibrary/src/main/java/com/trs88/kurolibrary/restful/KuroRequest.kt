@@ -76,7 +76,7 @@ open class KuroRequest {
                     val encodeValue =URLEncoder.encode(value,"UTF-8")
                     builder.append(key).append("=").append(encodeValue).append("&")
                 }catch (e:Exception){
-
+                    e.printStackTrace()
                 }
             }
 

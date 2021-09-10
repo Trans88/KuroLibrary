@@ -5,4 +5,23 @@
         <attr name="loop" format="boolean"/>
         <attr name="intervalTime" format="integer|reference"/>
     </declare-styleable>
+
+    <declare-styleable name="KuroSliderView">
+<!--        菜单宽-->
+        <attr name="menuItemWidth" format="dimension"></attr>
+<!--        菜单高-->
+        <attr name="menuItemHeight" format="dimension"></attr>
+<!--        菜单文本大小-->
+        <attr name="menuItemTextSize" format="dimension"></attr>
+<!--        文字颜色-->
+        <attr name="menuItemTextColor" format="reference"></attr>
+<!--        菜单选中时文本大小-->
+        <attr name="menuItemSelectTextSize" format="dimension"></attr>
+<!--        菜单指示器-->
+        <attr name="menuItemIndicator" format="reference"></attr>
+<!--        菜单背景颜色-->
+        <attr name="menuItemBackgroundColor" format="color"></attr>
+<!--        菜单背景选中后颜色-->
+        <attr name="menuItemSelectBackgroundColor" format="color"></attr>
+    </declare-styleable>
 </resources>

@@ -43,7 +43,7 @@ object KuroExecutor {
         }
 
         //创建线程池
-        kuroExecutor = object : ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, unit, blockingQueue as BlockingQueue<Runnable>, threadFactory) {
+        kuroExecutor = object : ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, unit, blockingQueue as PriorityBlockingQueue<Runnable>, threadFactory) {
             override fun beforeExecute(t: Thread?, r: Runnable?) {
                 if (isPaused) {
                     lock.lock()
@@ -57,7 +57,6 @@ object KuroExecutor {
 
             override fun afterExecute(r: Runnable?, t: Throwable?) {
                 //监控线程池耗时任务，线程创建数量，正在运行的数量
-                KuroLog.it(TAG, "已执行完的任务的优先级是：" + (r as PriorityRunnable).priority)
             }
         }
     }
@@ -80,6 +79,7 @@ object KuroExecutor {
 
             //移除所有消息，防止需要执行onComplete了，onPrepare还没有被执行，那就不需要执行了
             mainHandler.removeCallbacksAndMessages(null)
+
             mainHandler.post { onComplete(t) }
 
         }
@@ -125,4 +125,19 @@ object KuroExecutor {
         }
         KuroLog.et(TAG, "KuroExecutor is resumed")
     }
+
+//    @Synchronized
+//    fun cancel(){
+//        isPaused =true
+//        val queue = kuroExecutor.queue
+//        val runnableList = mutableListOf<Runnable>()
+//        queue.drainTo(runnableList)
+//        for (runnable in runnableList) {
+//            runnable
+//        }
+//        val poll = queue.poll()
+//
+//
+//    }
+
 }

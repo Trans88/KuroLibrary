@@ -4,18 +4,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class KuroDateItem <DATA,VH:RecyclerView.ViewHolder>(data:DATA){
+/**
+ * DATA javabean对象
+ */
+abstract class KuroDateItem <DATA,VH:RecyclerView.ViewHolder>(data:DATA?){
     private lateinit var adapter: KuroAdapter
-    var mData:DATA?=null
+    var mData:DATA?=null //该item的数据对象
+
     init {
         this.mData=data
     }
 
-    abstract fun onBindData(holder: RecyclerView.ViewHolder,position:Int)
+    /**
+     * 绑定数据
+     */
+    abstract fun <VH:RecyclerView.ViewHolder> onBindData(holder:VH, position:Int)
 
 
     /**
-     * 获取资源文件的ID
+     * 获取该item资源文件的ID
      */
     open fun getItemLayoutRes():Int{
         return -1
@@ -36,6 +43,9 @@ abstract class KuroDateItem <DATA,VH:RecyclerView.ViewHolder>(data:DATA){
      * 刷新列表
      */
     fun refreshItem(){
+        if(adapter==null){
+            throw IllegalArgumentException("KuroAdapter is null pls setAdapter first")
+        }
         adapter.refreshItem(this)
     }
 
@@ -43,7 +53,15 @@ abstract class KuroDateItem <DATA,VH:RecyclerView.ViewHolder>(data:DATA){
      * 从列表移除
      */
     fun removeItem(){
+        if(adapter==null){
+            throw IllegalArgumentException("KuroAdapter is null pls setAdapter first")
+        }
+
         adapter.removeItem(this)
+    }
+
+    fun getPosition():Int{
+        return adapter.getPosition(this)
     }
 
     /**
@@ -51,5 +69,18 @@ abstract class KuroDateItem <DATA,VH:RecyclerView.ViewHolder>(data:DATA){
      */
     fun getSpanSize():Int{
         return 0
+    }
+
+    /**
+     * 该item被滑进屏幕
+     */
+    open fun onViewAttachedToWindow(holder: VH){
+    }
+
+    /**
+     * 该item被移除出屏幕
+     */
+    open fun onViewDetachedFromWindow(holder: VH){
+
     }
 }

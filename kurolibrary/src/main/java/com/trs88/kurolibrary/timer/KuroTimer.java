@@ -49,12 +49,6 @@ public class KuroTimer {
         thread.start();
     }
 
-//    public void scheduleAtAbsolute(KuroTimerTask task, long delay){
-////        KuroLog.i("uptimeMillis:"+SystemClock.uptimeMillis()+",currentTimeMillis:"+System.currentTimeMillis());
-//        if (delay < 0)
-//            throw new IllegalArgumentException("Negative delay.");
-//        sched(task, SystemClock.uptimeMillis()+delay, 0);
-//    }
 
     public void schedule(KuroTimerTask task, long delay) {
         if (delay < 0)
@@ -64,6 +58,7 @@ public class KuroTimer {
 
 
     public void schedule(KuroTimerTask task, Date time) {
+        task.setIsDate(true);
         sched(task, time.getTime(), 0);
     }
 
@@ -79,6 +74,7 @@ public class KuroTimer {
     public void schedule(KuroTimerTask task, Date firstTime, long period) {
         if (period <= 0)
             throw new IllegalArgumentException("Non-positive period.");
+        task.setIsDate(true);
         sched(task, firstTime.getTime(), -period);
     }
 
@@ -96,6 +92,7 @@ public class KuroTimer {
                                     long period) {
         if (period <= 0)
             throw new IllegalArgumentException("Non-positive period.");
+        task.setIsDate(true);
         sched(task, firstTime.getTime(), period);
     }
 
@@ -199,8 +196,13 @@ class TimerThread extends Thread {
                             queue.removeMin();
                             continue;  // No action required, poll queue again
                         }
-//                        currentTime = System.currentTimeMillis();
-                        currentTime = SystemClock.uptimeMillis();
+
+                        if (task.getIsDate()){
+                            currentTime = System.currentTimeMillis();
+                        }else {
+                            currentTime = SystemClock.uptimeMillis();
+                        }
+
                         executionTime = task.nextExecutionTime;
                         if (taskFired = (executionTime<=currentTime)) {
                             if (task.period == 0) { // Non-repeating, remove

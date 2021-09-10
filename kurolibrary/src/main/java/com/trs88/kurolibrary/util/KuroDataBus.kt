@@ -6,10 +6,13 @@ import java.util.concurrent.ConcurrentHashMap
 
 object KuroDataBus {
     private val eventMap =ConcurrentHashMap<String,StickyLiveData<*>>()
+
     fun <T>with(eventName:String):StickyLiveData<T>{
         //基于事件名称 订阅、分发消息，由于一个livedata 只能发送一种数据类型
         //所以 不同的event事件，需要使用不同的livedata实例去分发
         var liveData = eventMap[eventName]
+
+
         if(liveData ==null){
             liveData = StickyLiveData<T>(eventName)
             eventMap[eventName] =liveData

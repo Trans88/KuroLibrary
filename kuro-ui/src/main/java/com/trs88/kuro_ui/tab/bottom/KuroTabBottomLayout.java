@@ -52,7 +52,6 @@ public class KuroTabBottomLayout extends FrameLayout implements IKuroTabLayout<K
 
     public KuroTabBottomLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
     }
 
     @Override
@@ -202,7 +201,12 @@ public class KuroTabBottomLayout extends FrameLayout implements IKuroTabLayout<K
             targetView =KuroViewUtil.findTypeView(rootView, AbsListView.class);
         }
 
+        if (targetView ==null){
+            targetView =KuroViewUtil.findTypeView(rootView,FrameLayout.class);
+        }
+
         if (targetView!=null){
+            KuroLog.i("修复底部高度");
             targetView.setPadding(0,0,0,KuroDisplayUtil.dp2px(tabBottomHeight,getResources()));
             //让padding可以回执
             targetView.setClipToPadding(false);

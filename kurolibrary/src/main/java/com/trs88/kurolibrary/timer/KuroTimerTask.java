@@ -37,6 +37,7 @@ import java.util.Timer;
  */
 
 public abstract class KuroTimerTask implements Runnable {
+    private boolean isDate = false;
     /**
      * This object is used to control access to the TimerTask internals.
      */
@@ -157,6 +158,14 @@ public abstract class KuroTimerTask implements Runnable {
             return (period < 0 ? nextExecutionTime + period
                     : nextExecutionTime - period);
         }
+    }
+
+    public void setIsDate(boolean isDate){
+        this.isDate =isDate;
+    }
+
+    public boolean getIsDate(){
+       return isDate;
     }
 }
 
