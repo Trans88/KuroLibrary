@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tencent.mmkv.MMKV
 import com.trs88.kuro_ui.kuroItem.KuroAdapter
 import com.trs88.kuro_ui.kuroItem.KuroDateItem
 import com.trs88.kuro_ui.kuroItem.KuroViewHolder
@@ -41,5 +42,8 @@ class MainActivity : AppCompatActivity() {
         dateSets.add(TopKuroItem())
 
         kuroAdapter.addItems(dateSets,false)
+        val defaultMMKV = MMKV.defaultMMKV()
+        val decodeString = defaultMMKV!!.decodeString("token")
+        KuroLog.i("decodeString:$decodeString")
     }
 }
