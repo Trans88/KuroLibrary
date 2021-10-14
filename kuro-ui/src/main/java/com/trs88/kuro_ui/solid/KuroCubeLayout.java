@@ -1,4 +1,4 @@
-package net.sysolution.cubescreencontrol.ui;
+package com.trs88.kuro_ui.solid;
 
 import android.content.Context;
 import android.graphics.Camera;
@@ -9,17 +9,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-//import com.trs88.kurolibrary.log.KuroLog;
+import com.trs88.kurolibrary.log.KuroLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class Custom3DView extends ViewGroup {
+public class KuroCubeLayout extends ViewGroup {
     private Camera mCamera = new Camera();//摄像机
     private Matrix mMatrix = new Matrix();//矩阵
-
-    public Custom3DView(Context context, AttributeSet attrs) {
+    private int childViewMaxWidth = 0, childViewMaxHeight = 0;//子View的宽高
+    public KuroCubeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 //        mCamera.rotateX(50);
 //        mCamera.rotateY(50);
@@ -27,13 +26,14 @@ public class Custom3DView extends ViewGroup {
 //        mCamera.restore();//恢复保存的状态（如果有）
     }
 
-    private int childViewMaxWidth = 0, childViewMaxHeight = 0;
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         int viewGroupWidth = 0, viewGroupHeight = 0;
+
         measureChildren(widthMeasureSpec, heightMeasureSpec);//测量子view
 
         for (int i = 0; i < getChildCount(); i++) {
@@ -48,25 +48,31 @@ public class Custom3DView extends ViewGroup {
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
         switch (widthMode) {
-            case MeasureSpec.EXACTLY://match_parent 100dp 确切值 父决定子的确切大小，子被限定在给定的边界里，忽略本身想要的大小
+            case MeasureSpec.EXACTLY:
+                //match_parent 100dp 确切值 父决定子的确切大小，子被限定在给定的边界里，忽略本身想要的大小
                 viewGroupWidth = widthSize > childViewMaxWidth ? widthSize : childViewMaxWidth;//选择较大的值
                 break;
-            case MeasureSpec.AT_MOST://wrap_content  子最大可以达到的指定大小
+            case MeasureSpec.AT_MOST:
+                //wrap_content  子最大可以达到的指定大小
                 viewGroupWidth = childViewMaxWidth;
                 break;
             case MeasureSpec.UNSPECIFIED:// 父容器不对子View的大小做限制.
                 break;
         }
         switch (heightMode) {
-            case MeasureSpec.EXACTLY://match_parent 100dp 确切值 父决定子的确切大小，子被限定在给定的边界里，忽略本身想要的大小
+            case MeasureSpec.EXACTLY:
+                //match_parent 100dp 确切值 父决定子的确切大小，子被限定在给定的边界里，忽略本身想要的大小
                 viewGroupHeight = heightSize > childViewMaxHeight ? heightSize : childViewMaxHeight;//选择较大的值
                 break;
-            case MeasureSpec.AT_MOST://wrap_content  子最大可以达到的指定大小
+            case MeasureSpec.AT_MOST:
+                //wrap_content  子最大可以达到的指定大小
                 viewGroupHeight = childViewMaxHeight;
                 break;
-            case MeasureSpec.UNSPECIFIED:// 父容器不对子View的大小做限制.
+            case MeasureSpec.UNSPECIFIED:
+                // 父容器不对子View的大小做限制.
                 break;
         }
+        //测量完成设置
         setMeasuredDimension(viewGroupWidth, viewGroupHeight);
     }
 
@@ -84,12 +90,18 @@ public class Custom3DView extends ViewGroup {
         }
     }
 
+    /**
+     * 绘制子View
+     * @param canvas
+     */
     @Override
     protected void dispatchDraw(Canvas canvas) {
 //        KuroLog.i("dispatchDraw");
         super.dispatchDraw(canvas);
+
         List<Integer> pages = populateDrawOrder();
         pages.size();
+
         for (int i = 0; i < 6; i++) {
             boolean flag = false;
             for (int j = 0; j < pages.size(); j++) {
@@ -98,6 +110,7 @@ public class Custom3DView extends ViewGroup {
                     flag = true;//找到相同的页码，不做处理，最后画
                 }
             }
+
             if (!flag) {
                 drawChildView(canvas, i);
             }

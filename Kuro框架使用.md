@@ -2,7 +2,7 @@
 
 框架的初衷是把一些我平时开发方便的功能集合起来，以便在不同项目中能够快速集成开发，后来由于集成的越来越多，一个sdk的体积过大，后拆分为KuroLibrary和KuroUI两个sdk,结果发现KuroLibrary的体积还是过大，之后如果有时间，还会细分，在此抱歉！
 
-## 一、KuroLibrary
+
 
 KuroLibrary集成了以下Api：
 
@@ -26,6 +26,21 @@ log相关:
 | KuroLogManager | 管理KuroLog                                                  |
 | KuroLogConfig  | 配置KuroLog,包括是否显示线程，设置全局的TAG,打印堆栈的深度，打印日志等级，设置打印器等等。 |
 | KuroLogPrinter | KuroLog打印器，可以用户自己扩展，内置了控制台打印、app ui打印和本地日志打印 |
+
+KuroUi集成了以下Api
+
+| Api名称             | 功能                                                         |
+| ------------------- | ------------------------------------------------------------ |
+| KuroBanner          | 滚动图，支持是否自动播放，是否循环播放，是否显示指示器，切换指示器、自定义指示器等 |
+| KuroRefreshLayout   | 下拉刷新组件，支持扩展KuroOverView实现自定义的刷新头         |
+| KuroTabBottomLayout | 底部导航栏，支持单个tab设置高度、头部线条颜色、头部线条高度、底部透明度、支持文字、图片、字符显示图标。 |
+| KuroTabTopLayout    | 顶部导航栏，支持自动滚动，实现点击的位置能够自动滚动展示前后2个 |
+
+
+
+## 一、KuroLibrary
+
+
 
 依赖方式
 
